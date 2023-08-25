@@ -1,6 +1,0 @@
-let messages = await Message.find({
-    $or: [
-        { senderId: senderId, receiverId: receiverId },
-        { senderId: receiverId, receiverId: senderId },
-    ]
-})
