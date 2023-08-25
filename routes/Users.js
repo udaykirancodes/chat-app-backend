@@ -19,6 +19,9 @@ const upload = multer({ storage: storage })
 const FetchUser = require('../FetchUser');
 const User = require('../models/User');
 
+
+router.get('/', (req, res) => res.send('Hi Uday..! \n Your App is Working Fine!'))
+
 // Access all users except the currently logged in user
 router.get('/allusers', FetchUser, async (req, res) => {
     try {
