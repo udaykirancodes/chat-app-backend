@@ -39,7 +39,7 @@ const getUser = (userId) => {
 
 // setInterval(() => {
 //     console.log('Online :- ' + JSON.stringify(users.length));
-// }, 10000);
+// }, 2000);
 
 
 

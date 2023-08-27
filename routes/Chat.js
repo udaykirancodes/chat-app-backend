@@ -23,7 +23,7 @@ router.post('/create-convo', async (req, res) => {
     }
 })
 // Mark as Read
-router.post('/mark-read/:convoId', async (req, res) => {
+router.post('/mark-read/:convoId', FetchUser, async (req, res) => {
     try {
         let convoId = req.params.convoId;
         if (!convoId) {
@@ -33,8 +33,12 @@ router.post('/mark-read/:convoId', async (req, res) => {
         if (!convo) {
             return res.status(400).json({ success: false, msg: "Id is Invalid" });
         }
+        let userId = req.user.id;
         let msgId = convo.lastMessage;
         let msg = await Message.findById(msgId);
+        if (msg.senderId.toString() === userId.toString()) {
+            return res.status(400).json({ success: false });
+        }
         msg.seen = true;
         await msg.save();
         return res.status(200).json({ success: true });
