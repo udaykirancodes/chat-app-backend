@@ -51,6 +51,11 @@ io.on('connection', (socket) => {
         addUser(userId, socket.id);
         io.emit("getUsers", users);
     });
+    socket.on("removeUser", (userId) => {
+        console.log('socket removing')
+        removeUser(socket.id);
+        io.emit("getUsers", users);
+    });
     //send and get message
     socket.on("sendMessage", (message) => {
         console.log('Message Received ' + JSON.stringify(message.message));

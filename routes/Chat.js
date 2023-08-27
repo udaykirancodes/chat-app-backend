@@ -22,6 +22,27 @@ router.post('/create-convo', async (req, res) => {
         res.status(500).json({ success: false, msg: "Internal Server Error" });
     }
 })
+// Mark as Read
+router.post('/mark-read/:convoId', async (req, res) => {
+    try {
+        let convoId = req.params.convoId;
+        if (!convoId) {
+            return res.status(400).json({ success: false, msg: "Id is Required" });
+        }
+        let convo = await Conversation.findById(convoId);
+        if (!convo) {
+            return res.status(400).json({ success: false, msg: "Id is Invalid" });
+        }
+        let msgId = convo.lastMessage;
+        let msg = await Message.findById(msgId);
+        msg.seen = true;
+        await msg.save();
+        return res.status(200).json({ success: true });
+    } catch (error) {
+        console.log(error.message)
+        res.status(500).json({ error: error.message, success: false, msg: "Internal Server Error" });
+    }
+})
 // Send Message
 router.post('/send-message', FetchUser, async (req, res) => {
     try {
@@ -46,6 +67,7 @@ router.post('/send-message', FetchUser, async (req, res) => {
         res.status(500).json({ success: false, msg: "Internal Server Error" });
     }
 })
+
 router.get('/get-convos', FetchUser, async (req, res) => {
     try {
         let id = req.user.id;
